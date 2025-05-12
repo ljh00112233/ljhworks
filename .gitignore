@@ -1,0 +1,75 @@
+# ====== 기본 node_modules ======
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# ====== 환경변수 파일 ======
+.env
+.env.local
+.env.*.local
+
+client/.env
+server/.env
+
+# ====== 로그 파일 ======
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ====== 빌드 산출물 ======
+client/build/
+server/dist/
+server/build/
+
+# ====== 운영 중 생기는 캐시/백업 ======
+.cache/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+out/
+coverage/
+*.lcov
+
+# ====== TypeScript 캐시 ======
+*.tsbuildinfo
+
+# ====== 에디터 설정 ======
+.vscode/
+.idea/
+*.swp
+
+# ====== 리포트/기록 ======
+*.tgz
+*.pid
+*.seed
+*.pid.lock
+node_repl_history
+yarn.lock
+package-lock.json
+
+# ====== 테스트 관련 ======
+.nyc_output
+jest/
+coverage/
+*.test.js
+*.spec.js
+*.snap
+
+# ====== Mac/Windows/Linux 시스템 파일 ======
+.DS_Store
+Thumbs.db
+
+# ====== Vercel & Deployment 관련 ======
+.vercel/
+vercel.json
+
+# ====== Git 관련 자체 무시할 것 ======
+*.orig
+
+# ====== 리액트 기본 이미지 등 무시 (선택) ======
+client/public/logo192.png
+client/public/logo512.png
