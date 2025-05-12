@@ -1,0 +1,22 @@
+# Node modules
+node_modules/
+
+# Env variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+*.pid
+
+# Debug/cache files
+.cache/
+npm-debug.log*
+
+# DB/Temp
+*.sqlite
+*.db
+*.sql
+*.seed
+*.tmp
