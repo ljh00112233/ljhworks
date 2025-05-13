@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const db = require('../config/db'); // mysql2/promise pool
 
+// JWT 비밀키: .env에서 지정하거나, 개발 중 임시값 사용
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.warn('⚠️ Warning: JWT_SECRET is not defined in environment variables.');
+}
+
 /**
  * JWT 기반 인증 라우터
  * - 로그인 시 username/password 검증 후 JWT 발급
@@ -13,7 +19,7 @@ const db = require('../config/db'); // mysql2/promise pool
 
 // 로그인
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;  // 요청 바디에서 username, password 추출
+  const { username, password } = req.body;
   try {
     // 1) 사용자 조회 (username 기준)
     const [rows] = await db.execute(
@@ -33,8 +39,11 @@ router.post('/login', async (req, res) => {
     }
 
     // 3) JWT 토큰 발급 (payload에 isAdmin 포함)
+    if (!JWT_SECRET) {
+      return res.status(500).json({ error: '서버 설정 오류: JWT_SECRET 미설정' });
+    }
     const payload = { id: user.id, username: user.username, isAdmin: !!user.isAdmin };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
     // 4) 클라이언트에 토큰과 유저 정보 반환
     res.json({ message: '로그인 성공', token, user: payload });
@@ -50,7 +59,10 @@ function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: '토큰이 필요합니다.' });
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  if (!JWT_SECRET) {
+    return res.status(500).json({ error: '서버 설정 오류: JWT_SECRET 미설정' });
+  }
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: '유효하지 않은 토큰입니다.' });
     req.user = user;
     next();
