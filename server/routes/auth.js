@@ -1,8 +1,8 @@
 const express = require('express');
-const router  = express.Router();
-const db      = require('../config/db');
-const bcrypt  = require('bcrypt');
-const jwt     = require('jsonwebtoken');
+const router = express.Router();
+const db = require('../config/db');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -22,14 +22,14 @@ router.post('/login', async (req, res) => {
     }
 
     const payload = {
-      id:       userRow.id,
+      id: userRow.id,
       username: userRow.username,
-      isAdmin:  !!userRow.isAdmin
+      isAdmin: !!userRow.isAdmin
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.json({
-      user:  payload,
+      user: payload,
       token
     });
   } catch (err) {
