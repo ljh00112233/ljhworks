@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRoutes);  // 로그인 관련 API
-app.use('/categories', categoriesRouter);
+app.use('/api/categories', categoriesRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
