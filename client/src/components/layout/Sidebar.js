@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import api from '../../utils/api';
+import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * Sidebar Component (Bootstrap)
@@ -9,6 +10,7 @@ import api from '../../utils/api';
  * - 동적 카테고리 목록 + 생성 기능
  */
 export default function Sidebar() {
+  const { user } = useAuth();
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
 
@@ -55,18 +57,20 @@ export default function Sidebar() {
       {/* 카테고리 네비게이션 + 생성 폼 */}
       <nav>
         <h6 className="sidebar-heading px-3 mb-2 text-muted">Categories</h6>
-        <form className="d-flex mb-3" onSubmit={handleAddCategory}>
-          <input
-            type="text"
-            className="form-control me-2"
-            placeholder="Add category"
-            value={newCategory}
-            onChange={e => setNewCategory(e.target.value)}
-          />
-          <button type="submit" className="btn btn-primary">
-            Add
-          </button>
-        </form>
+        {user?.isAdmin && (
+          <form className="d-flex mb-3" onSubmit={handleAddCategory}>
+            <input
+              type="text"
+              className="form-control me-2"
+              placeholder="Add category"
+              value={newCategory}
+              onChange={e => setNewCategory(e.target.value)}
+            />
+            <button className="btn btn-primary mt-3" onClick={handleAddCategory}>
+              + 카테고리 추가
+            </button>
+          </form>
+        )}
         <ul className="nav flex-column">
           {categories.map(cat => (
             <li key={cat.id} className="nav-item mb-1">
